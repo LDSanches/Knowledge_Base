@@ -1,0 +1,6 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+   - name: MOTD
+     template: src=../templates/motd.default dest=⁄etc⁄motd owner=root mode=0644

@@ -1,0 +1,45 @@
+---
+# This role prints CPU, Memory and Local Disk information for nodes
+
+- hosts: all
+
+  tasks:
+
+  - name: Check Server Information
+    debug: msg="Hardware Validation"
+
+  - name: Disk Models File
+    template: src=disk_models.j2 dest=/tmp/disk_models
+
+  - name: CPU
+    debug: msg="{{ ansible_nodename }} => CPU= {{ ansible_processor_count }}x{{ ansible_processor_cores }} ; MODEL= {{ ansible_processor.1 }}"
+    tags:
+      - cpu
+
+  - name: Memory
+    debug: msg="{{ ansible_nodename }} => MEMORY= {{ ansible_memtotal_mb }} MB"
+    tags:
+      - memory
+
+  - name: Local Disks
+    script: list_local_disks.sh
+    register: local_disks
+    tags:
+      - local_disks
+
+  - name: Print Local Disks
+    debug: msg="{{ ansible_nodename }} => DISK= {{ item.split('|')[0] }} ; MODEL= {{ item.split('|')[1] }} ; SIZE= {{ item.split('|')[2] }}"
+    with_items: "{{ local_disks.stdout_lines }}"
+    tags:
+      - local_disks
+
+  - name: Disk Mounts
+    debug: msg="{{ ansible_nodename }} => MOUNT= {{ ansible_mounts[item.0]['mount'] }} ; TOTAL_SIZE= {{ ansible_mounts[item.0]['size_total'] }} Bytes ; AVAILABLE_SIZE= {{ ansible_mounts[item.0]['size_available'] }} Bytes"
+    with_indexed_items: "{{ ansible_mounts }}"
+    tags:
+      - mounts
+
+#- name: Ethernet
+#  debug: msg="{{ ansible_nodename }} ==> ETHERNET = {{ ansible_interfaces | join(' ') }}"
+#  debug: msg="{{ ansible_nodename }} ==> ETHERNET = {{ ansible_interfaces | join(' ') | regex_replace('.+(?=em\d+)', '') }}"
+#
