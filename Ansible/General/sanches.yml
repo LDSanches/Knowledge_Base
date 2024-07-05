@@ -1,0 +1,7 @@
+---
+- name: Sanches Playbook
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: 

@@ -1,0 +1,6 @@
+---
+# Substituir consumer_key_secret: "base64(Consumer Key:Consumer Secret)"
+# consumer_key_secret: "base64(djaR21PGoYp1iyK2n2ACOH9REdUb:ObRsAJWOL4fv2Tp27D1vd8fB3Ote)"
+consumer_key_secret: "06aef429-a981-3ec5-a1f8-71d38d86481e"
+cpf: "40442820135"  # Substitua pelo CPF que deseja consultar
+data_nascimento: "31081975"

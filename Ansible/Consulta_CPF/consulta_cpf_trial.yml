@@ -1,0 +1,33 @@
+---
+- name: Consulta CPF no SERPRO
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+#    - name: Obtendo o token de acesso
+#      uri:
+#        url: "https://gateway.apiserpro.serpro.gov.br/token"
+#        method: POST
+#        headers:
+#          Authorization: "Basic {{ consumer_key_secret }}"
+#          Content-Type: "application/x-www-form-urlencoded"
+#        body: "grant_type=client_credentials"
+#        body_format: form-urlencoded
+#        return_content: true
+#      register: token_response
+
+    # https://apicenter.estaleiro.serpro.gov.br/documentacao/consulta-cpf/pt/quick_start/#como-utilizar-a-api-cpf-demonstracao
+    - name: Consultando status do CPF
+      uri:
+        # url: "https://gateway.apiserpro.serpro.gov.br/api/v1/cpf/{{ cpf }}"
+        url: "https://gateway.apiserpro.serpro.gov.br/consulta-cpf-df-trial/v1/cpf/{{ cpf }}"
+        method: GET
+        headers:
+          accept: application/json
+          Authorization: "Bearer {{ consumer_key_secret }}"
+        return_content: true
+      register: cpf_status_response
+
+    - name: Mostrar resultado da consulta
+      debug:
+        msg: "{{ cpf_status_response.json }}"

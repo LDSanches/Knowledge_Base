@@ -1,0 +1,6 @@
+{
+    "ansible.python.interpreterPath": "/opt/anaconda3/bin/python",
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/role-arg-spec.json": "file:///Users/lsanches/Documents/RedHat/Sales/SA/Knowledge_Base/Ansible/Equatorial/consulta_cpf.yml"
+    }
+}

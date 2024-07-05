@@ -1,0 +1,34 @@
+---
+- name: Gather Information from HP Comware 5 Switches
+  hosts: switches
+  gather_facts: no  # We don't need to gather facts for network devices
+  connection: network_cli
+
+  tasks:
+    - name: Run command to collect information with ios_command
+      ios_command:
+        commands:
+          - display version
+          - display interfaces brief
+          # Add more commands as needed
+      register: result
+
+    - name: Display gathered information
+      debug:
+        var: result.stdout_lines
+
+    - name: HP Comware 5 inferface startup wirh raw
+      raw: |
+        screen-length disable
+        display interface brief | in GE
+      register: commandsOutput1
+
+    - name: "Run multiple commands and evaluate the output"
+      ce_command:
+        commands:
+          - display version
+          - display device
+        wait_for:
+          - result[0] contains HUAWEI
+          - result[1] contains Device
+        provider: "{{ cli }}"

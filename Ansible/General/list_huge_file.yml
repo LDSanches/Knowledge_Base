@@ -1,0 +1,15 @@
+---
+   tasks:
+   
+   - name: Verificar numero de paginas do arquivo
+     shell:           
+       cmd:  "echo $(($(cat EscopoDHCP_{{ data_hora }}.txt | wc -l) / 2500))"
+     register: count
+
+   - name: RESULTADO - IMPORTANTE - Clique nessa tarefa e depois clique na aba Output para visualizar o resultado
+     shell:           
+       #cmd: cat EscopoDHCP_{{ data_hora }}.txt
+       #cmd: cat EscopoDHCP_{{ data_hora }}.txt | head -n 3010
+       cmd: "tail -n +$(({{ item }} * 2500)) EscopoDHCP_{{ data_hora }}.txt  | head -n 2500"
+     with_sequence: start=0 end="{{count.stdout | int}}" stride=1
+     register: command_output

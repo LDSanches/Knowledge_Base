@@ -1,0 +1,46 @@
+---
+- name: Consulta CPF na Receita Federal
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Consultar status do CPF
+      uri:
+        url: "https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/ConsultaPublica.asp"
+        method: POST
+        body_format: form-urlencoded
+        body:
+          cpf: "{{ cpf }}"
+          data_nascimento: "{{ data_nascimento }}"
+        return_content: true
+        status_code: 200
+        validate_certs: false
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+          Referer: https://www.receita.fazenda.gov.br/ConsultaStatusCpf.aspx
+      register: cpf_status
+
+    - name: Exibir resultado da consulta
+      debug:
+        msg: "{{ cpf_status.json }}"
+
+#    - name: Consult CPF status from Receita Federal website
+#      uri:
+#        url: https://www.receita.fazenda.gov.br/ConsultaStatusCpf.aspx
+#        method: POST
+#        body:
+#          CPF: "{{ cpf }}"
+#          data_nascimento: "{{ data_nascimento }}"
+#        body_format: form-urlencoded
+#        return_content: true
+#        status_code: 200
+#        validate_certs: false
+#        headers:
+#          Content-Type: "application/x-www-form-urlencoded"
+#          Referer: https://www.receita.fazenda.gov.br/ConsultaStatusCpf.aspx
+#        timeout: 10
+#      register: cpf_status_response
+#
+#    - name: Show all CPF status results
+#      ansible.builtin.debug:
+#        msg: "{{ cpf_status_response.json }}"

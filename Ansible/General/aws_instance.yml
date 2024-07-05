@@ -1,0 +1,19 @@
+---
+- name: AWS Cloud Operations
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    instance_config:
+      tags:
+        function: cloud-ops
+    key_name: app-keypair
+    image_id: ami-016eb5d644c333ccb
+    vpc_subnet_id: subnet-0332628f89a6eb487
+    security_group: sg-01987c47fb4cdf887
+    wait: false
+
+  tasks:
+    # - name: Create a key pair in us-east-1 named app-keypair
+
+    # - name: Create a t3.medium instance called lightspeed-connect-01 using instance_config var

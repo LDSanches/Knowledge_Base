@@ -1,0 +1,48 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    # Download the report into a temporary directory on the Ansible Playbook host
+    - name: Create temporary directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: unique_suffix
+      register: temp_dir
+
+    - name: Fetch zip file from the source server
+      ansible.builtin.fetch:
+        src: "/path/to/source/file.zip"
+        dest: "{{ temp_dir.path }}/file.zip"
+        flat: yes
+
+    # Unzip the ZIP files
+    - name: Extract all ZIP files
+      ansible.builtin.unarchive:
+        src: "{{ item }}"
+        dest: "{{ temp_dir.path }}"
+      with_fileglob:
+        - "{{ temp_dir.path }}/*.zip"
+      when: ansible_operating_system == "AIX"
+
+    # Unzip the GZ files
+    - name: Extract all of the GZ files
+      ansible.builtin.unarchive:
+        src: "{{ item }}"
+        dest: "{{ temp_dir.path }}"
+      with_fileglob:
+        - "{{ temp_dir.path }}/*.tar.gz"
+      when: ansible_operating_system == "Linux"
+      #ansible.builtin.command: find "{{ temp_dir.path }}" -name '*.tar.gz' -exec gzip -d {} \\;
+
+    # DB2 Instanace Update
+    - name: DB2 Instanace Update
+     
+   
+    # Remove the Temporary folder
+    - hosts: localhost
+      tasks:
+        - name: Remove Temporary Directory
+          ansible.builtin.file:
+            path: "{{ hostvars['localhost']['temp_dir'].path }}"
+            state: absent
+          when: hostvars['localhost']['temp_dir'].path is defined

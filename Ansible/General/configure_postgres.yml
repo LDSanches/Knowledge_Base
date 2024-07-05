@@ -1,0 +1,25 @@
+---
+- name: Configure a PostgreSQL Database Server
+  hosts: databases
+  become: true
+
+  vars:
+    database_config:
+    port_id: '5432/tcp'
+    wait: false
+
+  tasks:
+    # Install postgresql-server & Run postgresql-setup command & Start and enable postgresql service & Configure port 5432/tcp into firewalld to allow traffic
+    
+    # Install postgresql-server
+    # Run postgresql-setup command
+    # Start and enable postgresql service
+    # Configure port 5432/tcp into firewalld to allow traffic
+
+    # - name: Install postgresql-server
+
+    # - name: Run postgresql-setup command
+
+    # - name: Start and enable postgresql service
+
+    # - name: Configure port 5432/tcp into firewalld to allow traffic
